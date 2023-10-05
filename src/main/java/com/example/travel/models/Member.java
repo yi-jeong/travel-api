@@ -27,6 +27,7 @@ public class Member implements UserDetails {
     private long serial;
 
     @Column(unique = true)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private String userId;
     private String password;
     private String nickName;

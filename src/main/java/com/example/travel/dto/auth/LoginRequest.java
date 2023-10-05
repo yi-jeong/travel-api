@@ -1,4 +1,4 @@
-package com.example.travel.dto;
+package com.example.travel.dto.auth;
 
 import lombok.*;
 

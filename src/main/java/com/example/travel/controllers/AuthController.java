@@ -1,8 +1,9 @@
 package com.example.travel.controllers;
 
+import com.example.travel.dto.common.CommonResponse;
 import com.example.travel.services.AuthService;
-import com.example.travel.dto.JwtResponse;
-import com.example.travel.dto.LoginRequest;
+import com.example.travel.dto.auth.JwtResponse;
+import com.example.travel.dto.auth.LoginRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,15 +20,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
+    public CommonResponse<JwtResponse> login(@RequestBody LoginRequest request) {
         log.debug("login 진입 {}", request.toString());
-        return authService.login(request);
+        JwtResponse result = authService.login(request);
+
+        return CommonResponse.success(result);
     }
 
     @PostMapping("/join")
-    public JwtResponse signup(@RequestBody LoginRequest request) {
+    public CommonResponse<JwtResponse> signup(@RequestBody LoginRequest request) {
         log.debug("join 진입 {}", request);
-        return authService.join(request);
+        JwtResponse result = authService.join(request);
+
+        return CommonResponse.success(result);
     }
 
 }

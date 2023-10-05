@@ -1,5 +1,6 @@
 package com.example.travel.services;
 
+import com.example.travel.exception.CustomException;
 import com.example.travel.models.Member;
 import com.example.travel.repositories.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,11 @@ public class MemberService {
     }
 
     public Member save(Member newMember) {
+        Optional<Member> sameCheck = memberRepository.findByUserId(newMember.getUserId());
+        if(sameCheck.isPresent()){
+            throw new CustomException("Error", HttpStatus.UNPROCESSABLE_ENTITY, "중복된 아이디가 있습니다.");
+        }
+
         newMember.setUpdatedAt(LocalDateTime.now());
         return memberRepository.save(newMember);
     }

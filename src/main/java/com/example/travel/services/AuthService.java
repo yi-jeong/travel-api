@@ -1,8 +1,8 @@
 package com.example.travel.services;
 
 import com.example.travel.config.JwtTokenProvider;
-import com.example.travel.dto.JwtResponse;
-import com.example.travel.dto.LoginRequest;
+import com.example.travel.dto.auth.JwtResponse;
+import com.example.travel.dto.auth.LoginRequest;
 import com.example.travel.models.Member;
 import com.example.travel.repositories.MemberRepository;
 import com.example.travel.models.Role;
