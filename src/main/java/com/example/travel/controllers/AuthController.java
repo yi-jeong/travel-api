@@ -21,7 +21,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public CommonResponse<JwtResponse> login(@RequestBody LoginRequest request) {
-        log.debug("login 진입 {}", request.toString());
         JwtResponse result = authService.login(request);
 
         return CommonResponse.success(result);
@@ -29,7 +28,6 @@ public class AuthController {
 
     @PostMapping("/join")
     public CommonResponse<JwtResponse> signup(@RequestBody LoginRequest request) {
-        log.debug("join 진입 {}", request);
         JwtResponse result = authService.join(request);
 
         return CommonResponse.success(result);

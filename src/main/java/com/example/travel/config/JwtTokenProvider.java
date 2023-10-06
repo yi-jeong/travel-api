@@ -39,8 +39,6 @@ public class JwtTokenProvider {
     }
 
     public String createToken(Map<String, Object> extraClaims, UserDetails userDetails){
-        log.debug("토큰 생성 {}", userDetails.toString());
-
         String token = Jwts.builder()
                 .setClaims(extraClaims) // 정보 저장
                 .setSubject(userDetails.getUsername())
@@ -56,7 +54,6 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = memberService.userDetailsService().loadUserByUsername(this.getUserPk(token));
 
-        log.debug("JWT 토큰 인증 정보 조회 {}", userDetails.toString());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

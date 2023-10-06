@@ -1,6 +1,7 @@
 package com.example.travel.services;
 
 import com.example.travel.exception.CustomException;
+import com.example.travel.models.ErrorCode;
 import com.example.travel.models.Member;
 import com.example.travel.repositories.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +25,20 @@ public class MemberService {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 return memberRepository.findByUserId(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
+                        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_USER_NOT_FOUND));
             }
         };
     }
 
     public Member getMe(String username){
-        return memberRepository.findByUserId(username).orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
+        return memberRepository.findByUserId(username).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_USER_NOT_FOUND));
     }
 
     public Member save(Member newMember) {
         Optional<Member> sameCheck = memberRepository.findByUserId(newMember.getUserId());
+
         if(sameCheck.isPresent()){
-            throw new CustomException("Error", HttpStatus.UNPROCESSABLE_ENTITY, "중복된 아이디가 있습니다.");
+            throw new CustomException(ErrorCode.MEMBER_DUPLICATE_LOGIN_ID);
         }
 
         newMember.setUpdatedAt(LocalDateTime.now());

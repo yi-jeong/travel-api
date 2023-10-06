@@ -34,7 +34,6 @@ public class JwtTokenFilter extends GenericFilterBean {
 
             if(jwtTokenProvider.validateToken(Jwt)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(Jwt);
-                log.debug("JWT - {}", authentication.toString());
 
                 // SecurityContext 에 Authentication 객체를 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);

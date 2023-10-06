@@ -3,6 +3,8 @@ package com.example.travel.services;
 import com.example.travel.config.JwtTokenProvider;
 import com.example.travel.dto.auth.JwtResponse;
 import com.example.travel.dto.auth.LoginRequest;
+import com.example.travel.exception.CustomException;
+import com.example.travel.models.ErrorCode;
 import com.example.travel.models.Member;
 import com.example.travel.repositories.MemberRepository;
 import com.example.travel.models.Role;
@@ -45,14 +47,11 @@ public class AuthService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword()));
         } catch (AuthenticationException ex) {
-            log.error("Authentication failed: " + ex.getMessage());
-            throw new IllegalArgumentException("Authentication failed: " + ex.getMessage(), ex);
+            throw new CustomException(ErrorCode.MEMBER_LOGIN_INFO_NOT_FOUND);
         }
 
         var member = memberRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 아이디가 없습니다."));
-
-        log.debug("존재 하는 유저 확인 {}", member.toString());
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_LOGIN_INFO_NOT_FOUND));
 
         var jwt = jwtTokenProvider.createToken(new HashMap<>(), member);
         return JwtResponse.builder().token(jwt).build();
