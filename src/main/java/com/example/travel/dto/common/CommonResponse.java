@@ -12,18 +12,20 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class CommonResponse<T> {
 
+    private String code;
     private String message;
     private T data;
 
-    public static <T> CommonResponse<T> success(T data, String message) {
+    public static <T> CommonResponse<T> success(String code, T data, String message) {
         return CommonResponse.<T>builder()
+                .code(code)
                 .data(data)
                 .message(message)
                 .build();
     }
 
     public static <T> CommonResponse<T> success(T data) {
-        return success(data, null);
+        return success("0000", data, null);
     }
 
     public static <T> CommonResponse<T> success() {

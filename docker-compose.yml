@@ -1,18 +1,3 @@
-## Travel TodoList ✈️
-
----
-
-### 🌎 프로젝트 환경
-```
-spring: spring Boot v3.1.4
-java: jdk 17
-build-tool: maven
-sql-mapper: JPA
-```
-
-### ⚙️ MariaDB 로컬 셋팅
-docker-compose
-```
 version: '3.3'
 services:
   db:
@@ -34,15 +19,3 @@ services:
 # Names our volume
 volumes:
   my-db:
-```
-
-```
-# 도커 접속 
-docker exec -it mariadb mariadb -u root -p
-
-# database 생성
-create database travel;
-
-# 접근 권한 주기
-grant all privileges on *.* to 'test'@'%' identified by 'travel';
-```

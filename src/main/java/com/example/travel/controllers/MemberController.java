@@ -12,7 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +35,23 @@ public class MemberController {
         MemberDto member = DataMapper.map(memberInfo, MemberDto.class);
 
         return CommonResponse.success(member);
+    }
+
+    @GetMapping("/list")
+    public CommonResponse<List<MemberDto>> getMemberList(@RequestParam(value="userId", required = false) String UserId, @RequestParam(value="nickName", required = false) String NickName){
+        MemberDto member = new MemberDto();
+
+        if(UserId != null){
+            member.setUserId(UserId);
+        }
+
+        if(NickName != null){
+            member.setNickName(NickName);
+        }
+
+        List<MemberDto> memberInfo = memberRepository.searchAllMember(member);
+
+        return CommonResponse.success(memberInfo);
     }
 
 }

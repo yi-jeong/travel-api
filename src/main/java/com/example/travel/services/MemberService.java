@@ -3,7 +3,9 @@ package com.example.travel.services;
 import com.example.travel.exception.CustomException;
 import com.example.travel.models.ErrorCode;
 import com.example.travel.models.Member;
+import com.example.travel.models.QMember;
 import com.example.travel.repositories.MemberRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService{
 
     private final MemberRepository memberRepository;
 
