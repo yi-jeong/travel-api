@@ -31,6 +31,13 @@ public class CommonResponse<T> {
                 .build();
     }
 
+    public static <T> CommonResponse<T> fail(String message) {
+        return CommonResponse.<T>builder()
+                .code("E000")
+                .message(message)
+                .build();
+    }
+
     public static <T> CommonResponse<T> success(T data) {
         return success("0000", data, null);
     }

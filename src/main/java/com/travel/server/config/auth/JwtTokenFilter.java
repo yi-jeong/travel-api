@@ -1,46 +1,48 @@
 package com.travel.server.config.auth;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.travel.server.exception.dto.CommonResponse;
+import com.travel.server.exception.model.ErrorCode;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class JwtTokenFilter extends GenericFilterBean {
+public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // 헤더에서 JWT 추철
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+    public void doFilterInternal(
+            @Nonnull HttpServletRequest request,
+            @Nonnull HttpServletResponse response,
+            @Nonnull FilterChain chain
+    ) throws IOException, ServletException {
 
-        // 유효한 토큰 여부 체크
+        String token = jwtTokenProvider.resolveToken(request);
+
         if (token != null) {
-
             String Jwt = token.substring(7);
-
             if(jwtTokenProvider.validateToken(Jwt)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(Jwt);
-
-                // SecurityContext 에 Authentication 객체를 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
 
         chain.doFilter(request, response);
     }
-
 }

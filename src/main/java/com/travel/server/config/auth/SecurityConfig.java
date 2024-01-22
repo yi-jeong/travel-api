@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,6 +27,7 @@ public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationEntryPoint entryPoint;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -41,8 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf
-                        .disable())
+        http.csrf(AbstractHttpConfigurer::disable)
         // JWT 사용을 위해 세션 사용 안함 처리
         .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -54,7 +56,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         )
         .authenticationProvider(authenticationProvider())
-        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling((exceptionConfig) -> exceptionConfig.authenticationEntryPoint(entryPoint));
 
         return http.build();
     }
