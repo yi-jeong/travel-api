@@ -1,6 +1,6 @@
 package com.travel.server.config.auth;
 
-import com.travel.server.api.member.MemberService;
+import com.travel.server.api.auth.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +25,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
-    private final MemberService memberService;
+    private final CustomUserDetailService customUserDetailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationEntryPoint entryPoint;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(memberService.userDetailsService());
+        authProvider.setUserDetailsService(customUserDetailService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }

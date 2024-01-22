@@ -1,6 +1,9 @@
 package com.travel.server.config.auth;
 
+import com.travel.server.api.auth.CustomUserDetailService;
 import com.travel.server.api.member.MemberService;
+import com.travel.server.exception.CustomException;
+import com.travel.server.exception.model.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +28,7 @@ import java.util.Map;
 @Slf4j
 public class JwtTokenProvider {
 
-    private final MemberService memberService;
+    private final CustomUserDetailService customUserDetailService;
 
     @Value("${springboot.jwt.secret}")
     private String secretKey;
@@ -52,7 +55,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = memberService.userDetailsService().loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(this.getUserPk(token));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

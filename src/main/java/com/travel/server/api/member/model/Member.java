@@ -1,5 +1,6 @@
 package com.travel.server.api.member.model;
 
+import com.travel.server.api.common.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +21,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "MEMBER")
-public class Member implements UserDetails {
+public class Member extends BaseEntity implements UserDetails  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long serial;
+    private long id;
 
     @Column(unique = true)
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -36,11 +37,6 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String del;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

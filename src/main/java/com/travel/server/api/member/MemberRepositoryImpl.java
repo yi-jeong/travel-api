@@ -19,9 +19,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<MemberDto> searchAllMember(MemberDto memberDto) {
+    public List<MemberDto> searchAllMember(String userId, String nickName) {
         QMember member = QMember.member;
-        log.info("[Test] userId: {}, nickName: {}", eqUserId(memberDto.getUserId()), eqNickName(memberDto.getNickName()));
+        log.info("[Test] userId: {}, nickName: {}", eqUserId(userId), eqNickName(nickName));
 
         return queryFactory
                 .select(Projections.bean(MemberDto.class,
@@ -36,8 +36,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.del))
                 .from(member)
                 .where(
-                    eqUserId(memberDto.getUserId()),
-                    eqNickName(memberDto.getNickName())
+                    eqUserId(userId),
+                    eqNickName(nickName)
                 )
                 .fetch();
     }

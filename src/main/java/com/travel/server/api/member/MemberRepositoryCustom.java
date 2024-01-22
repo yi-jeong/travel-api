@@ -5,5 +5,5 @@ import com.travel.server.api.member.dto.MemberDto;
 import java.util.List;
 
 public interface MemberRepositoryCustom {
-    List<MemberDto> searchAllMember(MemberDto memberDto);
+    List<MemberDto> searchAllMember(String userId, String nickName);
 }

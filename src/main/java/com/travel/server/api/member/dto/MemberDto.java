@@ -1,17 +1,15 @@
 package com.travel.server.api.member.dto;
 
+import com.travel.server.api.member.model.Member;
 import com.travel.server.api.member.model.Role;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
 public class MemberDto {
-    private long serial;
+    private long id;
     private String userId;
     private String nickName;
     private String phoneNumber;
@@ -22,5 +20,16 @@ public class MemberDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private String del;
+    public static MemberDto from(Member member){
+        return MemberDto.builder()
+                .id(member.getId())
+                .userId(member.getUserId())
+                .nickName(member.getNickName())
+                .phoneNumber(member.getPhoneNumber())
+                .email(member.getEmail())
+                .role(member.getRole())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
+                .build();
+    }
 }

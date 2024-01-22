@@ -1,9 +1,6 @@
 package com.travel.server.config.auth;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.travel.server.exception.dto.CommonResponse;
-import com.travel.server.exception.model.ErrorCode;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.Authentication;
