@@ -1,6 +1,7 @@
 package com.travel.server.config.auth;
 
 import com.travel.server.api.auth.CustomUserDetailService;
+import com.travel.server.exception.JwtFilterExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
+    private final JwtFilterExceptionHandler jwtFilterExceptionHandler;
     private final CustomUserDetailService customUserDetailService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationEntryPoint entryPoint;
@@ -57,6 +59,7 @@ public class SecurityConfig {
         )
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(jwtFilterExceptionHandler, JwtTokenFilter.class)
         .exceptionHandling((exceptionConfig) -> exceptionConfig.authenticationEntryPoint(entryPoint));
 
         return http.build();

@@ -26,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     public void doFilterInternal(
             @Nonnull HttpServletRequest request,
             @Nonnull HttpServletResponse response,
-            @Nonnull FilterChain chain
+            @Nonnull FilterChain filterChain
     ) throws IOException, ServletException {
 
         String token = jwtTokenProvider.resolveToken(request);
@@ -39,6 +39,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }
