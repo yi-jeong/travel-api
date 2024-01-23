@@ -30,18 +30,20 @@ public class JwtFilterExceptionHandler extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (CustomException e) {
-            setErrorResponse(request, response, e);
+            setErrorResponse(request, response, e.getErrorCode());
+        } catch (Exception e){
+            setErrorResponse(request, response, ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
-    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, CustomException e) throws IOException {
-        response.setStatus(response.getStatus());
+    private void setErrorResponse(HttpServletRequest request, HttpServletResponse response, ErrorCode e) throws IOException {
+        response.setStatus(e.getStatus());
         response.setContentType("application/json; charset=UTF-8");
 
-        log.info("=== JwtFilterExceptionHandler code: {}, message: {}", e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+        log.info("=== JwtFilterExceptionHandler code: {}, message: {}", e.getCode(), e.getMessage());
 
         String jsonResponse = new ObjectMapper().writeValueAsString(
-                CommonResponse.fail(e.getErrorCode())
+                CommonResponse.fail(e)
         );
 
         response.getWriter().write(jsonResponse);

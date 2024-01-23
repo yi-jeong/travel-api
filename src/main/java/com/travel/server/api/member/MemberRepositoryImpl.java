@@ -25,7 +25,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         return queryFactory
                 .select(Projections.bean(MemberDto.class,
-                        member.serial,
+                        member.id,
                         member.userId,
                         member.nickName,
                         member.phoneNumber,
@@ -33,7 +33,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.role,
                         member.createdAt,
                         member.updatedAt,
-                        member.del))
+                        member.deletedAt))
                 .from(member)
                 .where(
                     eqUserId(userId),

@@ -28,12 +28,16 @@ public class Member extends BaseEntity implements UserDetails  {
     private long id;
 
     @Column(unique = true)
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private String userId;
+
     private String password;
+
     private String nickName;
+
     private String phoneNumber;
+
     private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;

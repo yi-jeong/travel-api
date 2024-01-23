@@ -24,10 +24,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws CustomException {
-//        Optional<Member> optMember = memberRepository.findByUserId(username);
-//        Member member = optMember.orElse(null);
-//        return member;
-
         return memberRepository.findByUserId(username)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_USER_NOT_FOUND));
     }

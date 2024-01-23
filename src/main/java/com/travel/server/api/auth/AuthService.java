@@ -44,12 +44,8 @@ public class AuthService {
     }
 
     public JwtResponse login(LoginRequest request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword()));
-        } catch (AuthenticationException ex) {
-            throw new CustomException(ErrorCode.MEMBER_LOGIN_INFO_NOT_FOUND);
-        }
+        // 유저 정보 인증
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword()));
 
         var member = memberRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_LOGIN_INFO_NOT_FOUND));
